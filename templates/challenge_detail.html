@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('challenges') }}">Desafios</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('challenges') }}?level={{ challenge.level }}">Nível {{ challenge.level }}</a></li>
+                    <li class="breadcrumb-item active">{{ challenge.title }}</li>
+                </ol>
+            </nav>
+
+            {% if not session.username %}
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Atenção</h5>
+                <p class="mb-2">Você precisa estar logado para submeter soluções e salvar seu progresso.</p>
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm me-2">Fazer Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-sm">Criar Conta</a>
+            </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="card-title mb-0">{{ challenge.title }}</h2>
+                        <span class="badge bg-{{ get_difficulty_color(challenge.difficulty) }}">
+                            {{ challenge.difficulty }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>Descrição</h5>
+                        <p class="card-text">{{ challenge.description }}</p>
+                    </div>
+
+                    {% if challenge.hints %}
+                    <div class="mb-4">
+                        <h5>Dicas</h5>
+                        <div class="alert alert-info">
+                            {{ challenge.hints }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-4">
+                        <h5>Seu Código</h5>
+                        <form id="code-form">
+                            <div class="mb-3">
+                                <label for="language" class="form-label">Linguagem</label>
+                                <select class="form-select" id="language" name="language" {% if not session.username %}disabled{% endif %}>
+                                    <option value="python">Python</option>
+                                    <option value="javascript">JavaScript</option>
+                                    <option value="java">Java</option>
+                                    <option value="csharp">C#</option>
+                                    <option value="cpp">C++</option>
+                                    <option value="other">Outra</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Código</label>
+                                <textarea class="form-control font-monospace" id="code" name="code" rows="15" 
+                                          placeholder="{% if not session.username %}Faça login para escrever seu código...{% else %}Escreva sua solução aqui...{% endif %}" 
+                                          {% if not session.username %}disabled{% endif %}></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success" {% if not session.username %}disabled{% endif %}>
+                                <i class="fas fa-paper-plane me-2"></i>
+                                {% if not session.username %}Faça Login para Submeter{% else %}Submeter Solução{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Informações</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Nível:</span>
+                            <span class="fw-bold">{{ challenge.level }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Categoria:</span>
+                            <span class="fw-bold">{{ challenge.category }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Dificuldade:</span>
+                            <span class="fw-bold">{{ challenge.difficulty }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Pontos:</span>
+                            <span class="fw-bold text-success">{{ challenge.points }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Progresso</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;" 
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                0%
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mb-0">Complete este desafio para desbloquear o próximo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('code-form');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Verificar se o usuário está logado
+        {% if not session.username %}
+        alert('Você precisa estar logado para submeter soluções.');
+        window.location.href = '/login';
+        return;
+        {% endif %}
+        
+        const code = document.getElementById('code').value;
+        const language = document.getElementById('language').value;
+        
+        if (!code.trim()) {
+            alert('Por favor, escreva seu código antes de submeter.');
+            return;
+        }
+        
+        fetch('/api/submit_solution', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                challenge_id: {{ challenge.id }},
+                code: code,
+                language: language
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Solução submetida com sucesso!');
+                updateProgress();
+            } else {
+                alert('Erro: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao submeter solução.');
+        });
+    });
+    
+    function updateProgress() {
+        const progressBar = document.querySelector('.progress-bar');
+        progressBar.style.width = '100%';
+        progressBar.textContent = '100%';
+        progressBar.setAttribute('aria-valuenow', '100');
+    }
+});
+</script>
+{% endblock %}

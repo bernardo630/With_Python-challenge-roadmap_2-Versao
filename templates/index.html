@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Desafie-se. Avance. Evolua.</h1>
+                <p class="lead mb-4">
+                    O Challenge Roadmap é a plataforma que transforma sua jornada de programação em um progresso real. 
+                    Aprenda com trilhas organizadas, desbloqueie novos desafios e evolua passo a passo — no seu ritmo, 
+                    do básico ao avançado.
+                </p>
+                <a href="{{ url_for('challenges') }}" class="btn btn-light btn-lg me-3">
+                    Comece Agora
+                </a>
+                <a href="#como-funciona" class="btn btn-outline-light btn-lg">
+                    Saiba Mais
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-dark text-white">
+                    <div class="card-body p-4">
+                        <h3 class="card-title">Domine programação através de desafios progressivos</h3>
+                        <p class="card-text">
+                            Nossa plataforma organiza trilhas de desafios por níveis e áreas do conhecimento, 
+                            sempre com foco em lógica, algoritmos, estruturas de dados e resolução de problemas reais.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Como Funciona -->
+<section id="como-funciona" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Aprender programação nunca foi tão claro</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-road fa-2x"></i>
+                    </div>
+                    <h4>Escolha sua trilha</h4>
+                    <p>Selecione um caminho de aprendizado — lógica, algoritmos, C#, Python, estruturas de dados, web e muito mais.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-tasks fa-2x"></i>
+                    </div>
+                    <h4>Complete os desafios</h4>
+                    <p>Resolva exercícios reais, de dificuldade crescente, com suporte e feedback.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-lock-open fa-2x"></i>
+                    </div>
+                    <h4>Desbloqueie novos níveis</h4>
+                    <p>Depois que concluir um desafio, o próximo nível é liberado automaticamente. Simples e motivador.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h4>Acompanhe seu progresso</h4>
+                    <p>Veja suas conquistas, porcentagem de avanço e badges de cada etapa concluída.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Diferenciais -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Por que o Challenge Roadmap é diferente?</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check text-success fa-2x me-3"></i>
+                    </div>
+                    <div>
+                        <h4>Progressão real</h4>
+                        <p>Você só avança quando domina o conteúdo anterior. Nada de pular etapas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check text-success fa-2x me-3"></i>
+                    </div>
+                    <div>
+                        <h4>Conteúdos estruturados</h4>
+                        <p>Trilhas organizadas com base em lógica e prática contínua.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check text-success fa-2x me-3"></i>
+                    </div>
+                    <div>
+                        <h4>Gamificação motivadora</h4>
+                        <p>Recompensas, níveis e conquistas que tornam o estudo mais divertido.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check text-success fa-2x me-3"></i>
+                    </div>
+                    <div>
+                        <h4>Aprendizado baseado em prática</h4>
+                        <p>Menos teoria, mais código. Tudo focado no mundo real da programação.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-dark text-white py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Pronto para começar sua jornada?</h2>
+        <p class="lead mb-4">Crie sua conta gratuita e inicie sua primeira trilha agora.</p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+            Começar Agora
+        </a>
+    </div>
+</section>
+{% endblock %}
